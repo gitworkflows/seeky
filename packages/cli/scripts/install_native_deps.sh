@@ -72,7 +72,7 @@ ARTIFACTS_DIR="$(mktemp -d)"
 trap 'rm -rf "$ARTIFACTS_DIR"' EXIT
 
 # NB: The GitHub CLI `gh` must be installed and authenticated.
-gh run download --dir "$ARTIFACTS_DIR" --repo openai/seeky "$WORKFLOW_ID"
+gh run download --dir "$ARTIFACTS_DIR" --repo khulnasoft/seeky "$WORKFLOW_ID"
 
 # Decompress the artifacts for Linux sandboxing.
 zstd -d "$ARTIFACTS_DIR/x86_64-unknown-linux-musl/seeky-linux-sandbox-x86_64-unknown-linux-musl.zst" \
