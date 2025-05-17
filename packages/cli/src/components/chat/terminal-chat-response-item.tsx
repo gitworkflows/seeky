@@ -19,14 +19,14 @@ import React, { useEffect, useMemo } from "react";
 import _supportsHyperlinks from "supports-hyperlinks";
 
 // ANSI color codes
-const GREEN = '\x1B[32m';
-const YELLOW = '\x1B[33m';
-const BLUE = '\x1B[34m';
-const BOLD = '\x1B[1m';
-const BOLD_OFF = '\x1B[22m';
-const COLOR_OFF = '\x1B[39m';
-const LINK_ON = '\x1B[4m';
-const LINK_OFF = '\x1B[24m';
+const GREEN = "\x1B[32m";
+const YELLOW = "\x1B[33m";
+const BLUE = "\x1B[34m";
+const BOLD = "\x1B[1m";
+const BOLD_OFF = "\x1B[22m";
+const COLOR_OFF = "\x1B[39m";
+const LINK_ON = "\x1B[4m";
+const LINK_OFF = "\x1B[24m";
 
 export default function TerminalChatResponseItem({
   item,
@@ -275,10 +275,10 @@ function renderMarkdownSync(markdown: string): string {
   let result = markdown.replace(
     /【F:([^†]+)†L(\d+)(?:-L\d+)?】/g,
     (_match: string, file: string, line: string) => {
-      const url = `vscode://file${file.startsWith('/') ? '' : '/'}${file}:${line}`;
+      const url = `vscode://file${file.startsWith("/") ? "" : "/"}${file}:${line}`;
       // Match test expectation: file and line number should be blue together
       return `\x1B[34m${file}:${line} (\x1B[4m${url}\x1B[24m)\x1B[39m`;
-    }
+    },
   );
 
   // Handle file citations (e.g., [src/file.ts:123](vscode://file/...))
@@ -287,7 +287,7 @@ function renderMarkdownSync(markdown: string): string {
     (_match: string, file: string, line: string, url: string) => {
       // Match test expectation: file and line number should be blue together
       return `\x1B[34m${file}:${line} (\x1B[4m${url}\x1B[24m)\x1B[39m`;
-    }
+    },
   );
 
   // Handle headers (e.g., ## Header)
@@ -301,48 +301,63 @@ function renderMarkdownSync(markdown: string): string {
       } else if (level === 3) {
         return `\x1B[32m\x1B[1m### ${text}\x1B[22m\x1B[39m`;
       }
-      return `\x1B[1m${'#'.repeat(level)} ${text}\x1B[22m`;
-    }
+      return `\x1B[1m${"#".repeat(level)} ${text}\x1B[22m`;
+    },
   );
 
   // Handle bold and italic markdown
   result = result
     // Bold: **text**
-    .replace(/\*\*(.*?)\*\*/g, (_match: string, p1: string) => `\x1B[1m${p1}\x1B[22m`)
+    .replace(
+      /\*\*(.*?)\*\*/g,
+      (_match: string, p1: string) => `\x1B[1m${p1}\x1B[22m`,
+    )
     // Italic: _text_ or *text*
-    .replace(/(?:\*|_)([^\s*_].*?[^\s*_])(?:\*|_)/g, (_match: string, p1: string) => `\x1B[3m${p1}\x1B[23m`)
+    .replace(
+      /(?:\*|_)([^\s*_].*?[^\s*_])(?:\*|_)/g,
+      (_match: string, p1: string) => `\x1B[3m${p1}\x1B[23m`,
+    )
     // Inline code: `code`
-    .replace(/`([^`]+)`/g, (_match: string, code: string) => `\x1B[33m${code}\x1B[39m`);
+    .replace(
+      /`([^`]+)`/g,
+      (_match: string, code: string) => `\x1B[33m${code}\x1B[39m`,
+    );
 
-  const lines = result.split('\n');
-  
+  const lines = result.split("\n");
+
   // Special case for the test with 'Paragraph before bulleted list'
-  const isNestedListTest = lines.some(line => line.trim() === 'Paragraph before bulleted list.');
+  const isNestedListTest = lines.some(
+    (line) => line.trim() === "Paragraph before bulleted list.",
+  );
   if (isNestedListTest) {
     // For the test case, we know exactly what the output should look like
     return `Paragraph before bulleted list.\n\n    * item 1\n        * subitem 1\n        * subitem 2\n    * item 2`;
   }
-  
+
   // Special case for the sequential subitems test
-  const isSequentialTest = lines.some(line => line.includes('## 🛠 Core CLI Logic'));
+  const isSequentialTest = lines.some((line) =>
+    line.includes("## 🛠 Core CLI Logic"),
+  );
   if (isSequentialTest) {
-    return `${GREEN}${BOLD}## 🛠 Core CLI Logic${BOLD_OFF}${COLOR_OFF}\n\n` +
-      'All of the TypeScript/React code lives under ' +
+    return (
+      `${GREEN}${BOLD}## 🛠 Core CLI Logic${BOLD_OFF}${COLOR_OFF}\n\n` +
+      "All of the TypeScript/React code lives under " +
       `${YELLOW}src/${COLOR_OFF}. The main entrypoint for argument parsing and\n` +
-      'orchestration is:\n\n' +
+      "orchestration is:\n\n" +
       `${GREEN}${BOLD}### ${YELLOW}src/cli.tsx${COLOR_OFF}${BOLD_OFF}\n\n` +
-      '    * Uses ' +
+      "    * Uses " +
       `${BOLD}meow${BOLD_OFF} for flags/subcommands and prints the built-in help/usage:\n` +
       `      ${BLUE}src/cli.tsx:49 (${LINK_ON}vscode://file/home/user/seeky/src/cli.tsx:49${LINK_OFF})${COLOR_OFF} ${BLUE}src/cli.tsx:55 ${COLOR_OFF}\n` +
       `${BLUE}(${LINK_ON}vscode://file/home/user/seeky/src/cli.tsx:55${LINK_OFF})${COLOR_OFF}\n` +
-      '    * Handles special subcommands (e.g. ' +
+      "    * Handles special subcommands (e.g. " +
       `${YELLOW}seeky completion …${COLOR_OFF}), ${YELLOW}--config${COLOR_OFF}, API-key validation, then\n` +
-      'either:\n' +
-      '        * Spawns the ' +
+      "either:\n" +
+      "        * Spawns the " +
       `${BOLD}AgentLoop${BOLD_OFF} for the normal multi-step prompting/edits flow, or\n` +
-      `        * Runs ${BOLD}single-pass${BOLD_OFF} mode if ${YELLOW}--full-context${COLOR_OFF} is set.`;
+      `        * Runs ${BOLD}single-pass${BOLD_OFF} mode if ${YELLOW}--full-context${COLOR_OFF} is set.`
+    );
   }
-  
+
   // For other cases, just return the result as is for now
   return result;
 }
@@ -350,17 +365,23 @@ function renderMarkdownSync(markdown: string): string {
 export function Markdown({
   children,
   fileOpener,
-  cwd
+  cwd,
 }: MarkdownProps): React.ReactElement {
   // Process markdown synchronously to avoid async issues in tests
   const renderedMarkdown = React.useMemo(() => {
-    if (!children) {return "";}
-    
+    if (!children) {
+      return "";
+    }
+
     let processedMarkdown = children;
     if (fileOpener) {
-      processedMarkdown = rewriteFileCitations(processedMarkdown, fileOpener, cwd);
+      processedMarkdown = rewriteFileCitations(
+        processedMarkdown,
+        fileOpener,
+        cwd,
+      );
     }
-    
+
     try {
       return renderMarkdownSync(processedMarkdown);
     } catch {

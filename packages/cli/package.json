@@ -1,6 +1,6 @@
 {
   "name": "seeky",
-  "version": "0.1.2504301751",
+  "version": "0.1.1",
   "license": "Apache-2.0",
   "bin": {
     "seeky": "bin/seeky.js"

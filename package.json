@@ -31,7 +31,10 @@
   "pnpm": {
     "patchedDependencies": {
       "marked-terminal@7.3.0": "patches/marked-terminal@7.3.0.patch"
-    }
+    },
+    "onlyBuiltDependencies": [
+      "sharp"
+    ]
   },
   "engines": {
     "node": ">=22",
