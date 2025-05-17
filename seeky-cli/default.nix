@@ -11,7 +11,7 @@ rec {
     nodejs      = node;
     npmInstallFlags = [ "--frozen-lockfile" ];
     meta = with pkgs.lib; {
-      description = "KhulnaSoft Seeky command‑line interface";
+      description = "OpenAI Seeky command‑line interface";
       license     = licenses.asl20;
       homepage    = "https://github.com/khulnasoft-com/seeky";
     };

@@ -1,5 +1,5 @@
-use crossterm::event::KeyEvent;
 use seeky_core::protocol::Event;
+use crossterm::event::KeyEvent;
 
 use crate::slash_command::SlashCommand;
 

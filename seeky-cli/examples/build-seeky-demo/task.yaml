@@ -1,6 +1,6 @@
 name: "build-seeky-demo"
 description: |
-  I want you to reimplement the original KhulnaSoft Seeky demo.
+  I want you to reimplement the original OpenAI Seeky demo.
 
   Functionality:
   - User types a prompt and hits enter to send

@@ -13,9 +13,6 @@ use ratatui::crossterm::terminal::EnterAlternateScreen;
 use ratatui::crossterm::terminal::LeaveAlternateScreen;
 use ratatui::crossterm::terminal::disable_raw_mode;
 use ratatui::crossterm::terminal::enable_raw_mode;
-use seeky_core::config::Config;
-
-use crate::mouse_capture::MouseCapture;
 
 use crate::mouse_capture::MouseCapture;
 

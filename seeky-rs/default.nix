@@ -17,7 +17,7 @@ rec {
       openssl
     ];
     meta = with pkgs.lib; {
-      description = "KhulnaSoft Seeky command‑line interface rust implementation";
+      description = "OpenAI Seeky command‑line interface rust implementation";
       license = licenses.asl20;
       homepage = "https://github.com/khulnasoft-com/seeky";
     };

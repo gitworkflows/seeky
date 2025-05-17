@@ -1,4 +1,4 @@
-<h1 align="center">KhulnaSoft Seeky CLI</h1>
+<h1 align="center">OpenAI Seeky CLI</h1>
 <p align="center">Lightweight coding agent that runs in your terminal</p>
 
 <p align="center"><code>npm i -g seeky</code></p>
